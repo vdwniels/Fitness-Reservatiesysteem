@@ -69,10 +69,12 @@ namespace BLKlant.Domein
         }
         public void ZetSlotEnToestel(string slot, string toestel)
         {
-            
             if (gereserveerdeSlotenEnToestellen.Keys.Count()+1 > 4) throw new ReservatieExeption("ZetSlotEnToestel - te veel sloten");
             if (string.IsNullOrWhiteSpace(slot)) throw new ReservatieExeption("ZetSlotEnToestel - Slot leeg");
             if (string.IsNullOrWhiteSpace(toestel)) throw new ReservatieExeption("ZetSlotEnToestel - Toestel leeg");
+            if (gereserveerdeSlotenEnToestellen.ContainsKey(slot)) throw new ReservatieExeption("ZetSlotEnToestel - je heb al een reservatie op dit moment");
+
+            
             //List<int> beginuren = new List<int>();
             //foreach(string a in gereserveerdeSlotenEnToestellen.Keys)
             //{
@@ -98,7 +100,7 @@ namespace BLKlant.Domein
             //        }
             //    }
             //}
-            gereserveerdeSlotenEnToestellen.Add(slot, toestel);
+            gereserveerdeSlotenEnToestellen.Add(slot.Trim(), toestel.Trim());
         }
     }
 }

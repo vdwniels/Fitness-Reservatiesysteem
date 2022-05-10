@@ -9,7 +9,7 @@ namespace TestProjectKlant
 {
     public class UnitTestReservatie
     {
-        private SortedDictionary<string, string> vol = new SortedDictionary<string, string>() { {"8-9","14" }, { "9-10", "14" }, { "12-13", "18" }, { "13-14", "18" } };
+        private SortedDictionary<string, string> Vol = new SortedDictionary<string, string>() { {"8-9","14" }, { "9-10", "14" }, { "12-13", "18" }, { "13-14", "18" } };
         private SortedDictionary<string, string> PlaatsOver = new SortedDictionary<string, string>() { { "8-9", "14" }, { "9-10", "14" }, { "12-13", "18" } };
 
         public UnitTestReservatie()
@@ -18,6 +18,7 @@ namespace TestProjectKlant
         [Fact]
         public void ZetReservatienummer_valid()
         {
+            
             Reservatie r= new Reservatie(48,15,"Jef.desmet@gmail.com","Jef","De Smet",DateTime.Today.AddDays(3));
 
             Assert.Equal(48, r.ReservatieNummer);
@@ -125,21 +126,99 @@ namespace TestProjectKlant
             Assert.Throws<ReservatieExeption>(() => r.ZetAchternaam(naam));
         }
 
-        DateTime vandaag = DateTime.Today;
-        [Theory]
-        [InlineData(vandaag)]
-        [InlineData(DateTime.Today.AddDays(7))]
-        public void ZetDatum_valid(DateTime datum)
+
+        [Fact]
+        public void ZetDatum_valid()
         {
+            DateTime overmorgen = DateTime.Today.AddDays(2);
+            DateTime vandaag = DateTime.Today.AddHours(1);
+            DateTime eindeWeek = DateTime.Today.AddDays(7);
+            Reservatie r = new Reservatie(48, 15, "Jef.desmet@gmail.com", "Jef", "De Smet", overmorgen);
+
+            Assert.Equal(overmorgen, r.Datum);
+            r.ZetDatum(vandaag);
+            Assert.Equal(vandaag, r.Datum);
+            
+            Assert.Equal(vandaag, r.Datum);
+            r.ZetDatum(eindeWeek);
+            Assert.Equal(eindeWeek, r.Datum);
 
         }
-        [Theory]
-        [InlineData(vandaag)]
-        [InlineData(DateTime.Today.AddDays(7))]
-        public void ZetDatum_valid(DateTime datum)
+        [Fact]
+        public void ZetDatum_invalid()
         {
+            DateTime overmorgen = DateTime.Today.AddDays(2);
+            DateTime gisteren = DateTime.Today.AddDays(-1);
+            DateTime vlgdWeek = DateTime.Today.AddDays(8);
+
+            Reservatie r = new Reservatie(48, 15, "Jef.desmet@gmail.com", "Jef", "De Smet", overmorgen);
+
+            Assert.Equal(overmorgen, r.Datum);
+            Assert.Throws<ReservatieExeption>(() => r.ZetDatum(gisteren));
+            Assert.Equal(overmorgen, r.Datum);
+
+            Assert.Equal(overmorgen, r.Datum);
+            Assert.Throws<ReservatieExeption>(() => r.ZetDatum(vlgdWeek));
+            Assert.Equal(overmorgen, r.Datum);
 
         }
 
+        [Theory]
+        [InlineData("20-21","5","20-21", "5")]
+        [InlineData("20-21       ","5","20-21", "5")]
+        [InlineData("     20-21     ","5","20-21", "5")]
+        [InlineData("22-23","5","22-23","5")]
+        [InlineData("20-21", "5        ", "20-21", "5")]
+        [InlineData("20-21", "    5    ", "20-21", "5")]
+        [InlineData("20-21", "2", "20-21", "2")]
+        public void ZetSlotEnToestel_valid(string slotIn, string toestelIn,string slotUit, string toestelUit)
+        {
+            SortedDictionary<string, string> ST = new SortedDictionary<string, string>();
+            Reservatie r = new Reservatie(48, 15, "Jef.desmet@gmail.com", "Jef", "De Smet", DateTime.Today.AddDays(3));
+
+            Assert.Equal(ST, r.gereserveerdeSlotenEnToestellen);
+            r.ZetSlotEnToestel(slotIn, toestelIn);
+            ST.Add(slotUit, toestelUit);
+            Assert.Equal(ST, r.gereserveerdeSlotenEnToestellen);
+        }
+        [Theory]
+        [InlineData(" ","4")]
+        [InlineData(null, "4")]
+        [InlineData("   \n", "4")]
+        [InlineData("     \r  ", "4")]
+        [InlineData("","4")]
+        [InlineData("21-22"," ")]
+        [InlineData("21-22", null)]
+        [InlineData("21-22", "   \n")]
+        [InlineData("21-22", "     \r  ")]
+        [InlineData("21-22", "")]
+        // zitten er al eens in
+        [InlineData("8-9", "14")]
+        [InlineData("9-10", "14")]
+        [InlineData("12-13", "18")]
+
+        public void ZetSlotEnToestel_invalid(string slot,string toestel)
+        {
+            Reservatie r = new Reservatie(48, 15, "Jef.desmet@gmail.com", "Jef", "De Smet", DateTime.Today.AddDays(3));
+            r.gereserveerdeSlotenEnToestellen = PlaatsOver;
+            Assert.Equal(PlaatsOver, r.gereserveerdeSlotenEnToestellen);
+            Assert.Throws<ReservatieExeption>(() => r.ZetSlotEnToestel(slot,toestel));
+            Assert.Equal(PlaatsOver, r.gereserveerdeSlotenEnToestellen);
+
+
+        }
+        [Fact]
+        public void ZetSlotEnToestel_invalid_TeVeelSloten()
+        {
+            string slot = "19-20";
+            string toestel = "3";
+            Reservatie r = new Reservatie(48, 15, "Jef.desmet@gmail.com", "Jef", "De Smet", DateTime.Today.AddDays(3));
+            r.gereserveerdeSlotenEnToestellen = Vol;
+
+            Assert.Equal(Vol, r.gereserveerdeSlotenEnToestellen);
+            Assert.Throws<ReservatieExeption>(() => r.ZetSlotEnToestel(slot, toestel));
+            Assert.Equal(Vol, r.gereserveerdeSlotenEnToestellen);
+
+        }
     }
 }
