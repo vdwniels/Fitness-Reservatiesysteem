@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BLKlant\BLKlant.csproj" />
+    <ProjectReference Include="..\DLKlant\DLKlant.csproj" />
   </ItemGroup>
 
 </Project>

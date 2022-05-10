@@ -7,19 +7,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Klant", "Klant", "{D8F1EAAF
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Beheerder", "Beheerder", "{82C9A603-F15E-411A-B36E-031CA2246F57}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppKlant", "ConsoleAppKlant\ConsoleAppKlant.csproj", "{07FFDF86-BA1D-4C12-9F8A-1E78CC08FEF2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppKlant", "ConsoleAppKlant\ConsoleAppKlant.csproj", "{07FFDF86-BA1D-4C12-9F8A-1E78CC08FEF2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BL", "BL", "{57F9E6C8-94B5-4398-8C8A-5A05C6B04A16}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DL", "DL", "{CB15E355-FE82-4B9B-A81D-C631975D2DCF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BLKlant", "BLKlant\BLKlant.csproj", "{C30BD38B-8800-4C90-8B0A-76ECC4A5438A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BLKlant", "BLKlant\BLKlant.csproj", "{C30BD38B-8800-4C90-8B0A-76ECC4A5438A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleAppKlantDL", "ConsoleAppKlantDL\ConsoleAppKlantDL.csproj", "{0D11CF2A-504A-4E26-9C71-E94FA984CB2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleAppKlantDL", "ConsoleAppKlantDL\ConsoleAppKlantDL.csproj", "{0D11CF2A-504A-4E26-9C71-E94FA984CB2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DLKlant", "DLKlant\DLKlant.csproj", "{E2136DFE-82E9-4519-8E7B-692D6023476B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DLKlant", "DLKlant\DLKlant.csproj", "{E2136DFE-82E9-4519-8E7B-692D6023476B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProjectKlant", "TestProjectKlant\TestProjectKlant.csproj", "{1A5B9EC3-6987-47FD-AF96-87B75320BDD8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestProjectKlant", "TestProjectKlant\TestProjectKlant.csproj", "{1A5B9EC3-6987-47FD-AF96-87B75320BDD8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
