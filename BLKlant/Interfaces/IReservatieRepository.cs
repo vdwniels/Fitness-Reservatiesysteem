@@ -9,6 +9,10 @@ namespace BLKlant.Interfaces
 {
     public interface IReservatieRepository
     {
-        Reservatie SelecteerReservatie(int reservatienummer);
+        public Reservatie SelecteerReservatie(int klantnummer, DateTime datum);
+        public bool BestaatReservatie(int klantnummer, DateTime datum);
+        public Reservatie SchrijfReservatieInDB(Reservatie r);
+
+
     }
 }

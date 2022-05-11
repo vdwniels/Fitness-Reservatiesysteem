@@ -6,7 +6,8 @@ namespace BLKlant.Domein
 {
     public class Reservatie
     {
-        public SortedDictionary<string, string> gereserveerdeSlotenEnToestellen = new SortedDictionary<string, string>();
+        public Dictionary<string, int> gereserveerdeSlotenEnToestellen = new Dictionary<string, int>();
+        private Dictionary<int, int> gereserveerdeSlotIDsEnToestellen = new Dictionary<int, int>();
         public Reservatie(int klantNummer, string emailadres, string voornaam, string achternaam, DateTime datum)
         {
             
@@ -67,40 +68,37 @@ namespace BLKlant.Domein
             if (datum < DateTime.Today || datum > DateTime.Today.AddDays(7)) throw new ReservatieExeption("ZetDatum - geen reservatie mogelijk op deze datum");
             Datum = datum;
         }
-        public void ZetSlotEnToestel(string slot, string toestel)
+        public void ZetSlotEnToestel(Dictionary<string, int> gereserveerd)
         {
-            if (gereserveerdeSlotenEnToestellen.Keys.Count()+1 > 4) throw new ReservatieExeption("ZetSlotEnToestel - te veel sloten");
-            if (string.IsNullOrWhiteSpace(slot)) throw new ReservatieExeption("ZetSlotEnToestel - Slot leeg");
-            if (string.IsNullOrWhiteSpace(toestel)) throw new ReservatieExeption("ZetSlotEnToestel - Toestel leeg");
-            if (gereserveerdeSlotenEnToestellen.ContainsKey(slot)) throw new ReservatieExeption("ZetSlotEnToestel - je heb al een reservatie op dit moment");
+            foreach (var g in gereserveerd)
+            {
+                if (gereserveerdeSlotenEnToestellen.Keys.Count() + 1 > 4) throw new ReservatieExeption("ZetSlotEnToestel - te veel sloten");
+                if (string.IsNullOrWhiteSpace(g.Key)) throw new ReservatieExeption("ZetSlotEnToestel - Slot leeg");
+                if (g.Value < 0) throw new ReservatieExeption("ZetSlotEnToestel - ongeldig toestel");
+                if (gereserveerdeSlotenEnToestellen.ContainsKey(g.Key)) throw new ReservatieExeption("ZetSlotEnToestel - je heb al een reservatie op dit moment");
 
-            
-            //List<int> beginuren = new List<int>();
-            //foreach(string a in gereserveerdeSlotenEnToestellen.Keys)
-            //{
-            //    beginuren.Add(int.Parse(a.ToString()));
-            //}
+                //var v = gereserveerdeSlotIDsEnToestellen.GroupBy(t => t.Value).OrderByDescending(t => t.Count()).Select(t => t.First());
 
-            //List<string> toestellen = new List<string>();
-            //foreach(string a in gereserveerdeSlotenEnToestellen.Values)
-            //{
-            //    toestellen.Add(a);
-            //}
-            //int opeenvolgend = 0;
-            //for (int i = beginuren.Count()-1; i > 0; i--)
-            //{
-            //    if (beginuren[i] == beginuren[i - 1] + 1)
-            //    {
-            //        opeenvolgend++;
-            //        if (opeenvolgend > 2)
-            //        {
-            //            if(toestellen[i] == toestellen[i-1] && toestellen[i] == toestellen[i - 2]) { 
-            //                throw new ReservatieExeption("ZetSlotEnToestel - meer dan 2 opeenvolgende slots met eenzelfde toestel");
-            //            }
-            //        }
-            //    }
-            //}
-            gereserveerdeSlotenEnToestellen.Add(slot.Trim(), toestel.Trim());
+                //for (int i = gereserveerdeSlotenEnToestellen.Count(); i > 1; i--)
+                //{
+                //    if ((SlotIDs[i] == SlotIDs[i - 1] + 1) && (SlotIDs[i - 1] == SlotIDs[i - 2] + 1))
+                //    {
+                //        if (toestellen[i] == toestellen[i - 1] && toestellen[i] == toestellen[i - 2])
+                //            throw new ReservatieExeption("ZetSlotEnToestel - meer dan 2 reservaties met hetzelfde toestel op rij");
+                //    }
+                //}
+                gereserveerdeSlotenEnToestellen.Add(g.Key, g.Value);
+
+            }
+        }
+        public override string ToString()
+        {
+            string s = $"{ReservatieNummer},{KlantNummer},{Emailadres},{Voornaam},{Achternaam},{Datum}";
+            foreach (var v in gereserveerdeSlotenEnToestellen)
+            {
+                s += $" || {v.Key} , {v.Key}";
+            }
+            return s;
         }
     }
 }
