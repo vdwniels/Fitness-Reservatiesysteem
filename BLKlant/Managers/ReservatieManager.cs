@@ -21,22 +21,19 @@ namespace BLKlant.Managers
 
         public Reservatie MaakReservatie(int klantNummer, string emailadres, string voornaam, string achternaam, DateTime datum, Dictionary<string, int> gereserveerdeSloten)
         {
-
+            Reservatie r = null;
             if (!resRepo.BestaatReservatie(klantNummer, datum))
             {
-                Reservatie r = new Reservatie(klantNummer, emailadres, voornaam, achternaam, datum);
-               // Dictionary<int, int> SlotIDsEnToestellen = slotRepo.GetSlots(gereserveerdeSloten);
-                r.ZetSlotEnToestel(gereserveerdeSloten);
+                r = new Reservatie(klantNummer, emailadres, voornaam, achternaam, datum);
                 resRepo.SchrijfReservatieInDB(r);
-                slotRepo.SchrijfGereserveerdeSlotenInDB(r);
-                return r;
             }
             else
             {
-                Reservatie r = resRepo.SelecteerReservatie(klantNummer, datum);
-                r.ZetSlotEnToestel(gereserveerdeSloten);
+                r = resRepo.SelecteerReservatie(klantNummer, datum);
             }
-            return null;
+                r.ZetSlotEnToestel(gereserveerdeSloten);
+                slotRepo.SchrijfGereserveerdeSlotenInDB(r);
+                return r;
         }
     }
 }

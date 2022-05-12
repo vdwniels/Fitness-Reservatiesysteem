@@ -37,9 +37,13 @@ namespace ConsoleAppKlantDL
             //GSRado.SchrijfGereserveerdeSlotenInDB(a);
             //Console.WriteLine(a.ToString());
 
-            ReservatieRepoADO ado = new ReservatieRepoADO(connectiestring);
-            Reservatie r = ado.SelecteerReservatie(4, DateTime.Today.AddYears(-20));
-            Console.WriteLine(r.ToString());
+            //ReservatieRepoADO ado = new ReservatieRepoADO(connectiestring);
+            //Reservatie r = ado.SelecteerReservatie(4, DateTime.Today.AddYears(-20));
+            //Console.WriteLine(r.ToString());
+
+            ToestelRepoADO ado = new ToestelRepoADO(connectiestring);
+            Toestel t = new Toestel(3, "Loopband", "Buiten Gebruik");
+            ado.UpdateStatus(t);
         }
     }
 }
