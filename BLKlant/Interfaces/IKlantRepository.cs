@@ -11,6 +11,7 @@ namespace BLKlant.Interfaces
     {
         public void SchrijfKlantInDB(List<Klant> k);
         public List<Klant> LeesKlanten();
+        public Klant SelecteerKlant(int? klantnummer, string? email);
 
     }
 }

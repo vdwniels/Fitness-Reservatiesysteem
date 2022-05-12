@@ -10,10 +10,27 @@ namespace BLKlant.Managers
 {
     public class ToestelManager
     {
-        private IToestelRepository repo;
+        private IToestelRepository toestelRepo;
+        private IReservatieRepository resRepo;
+
+        public ToestelManager(IToestelRepository toestelRepo, IReservatieRepository resRepo)
+        {
+            this.toestelRepo = toestelRepo;
+            this.resRepo = resRepo;
+        }
+
         public void VeranderStatus (Toestel t)
         {
-            repo.UpdateStatus(t);
+            toestelRepo.UpdateStatus(t);
+        }
+        public void VoegToestelToe(string toesteltype)
+        {
+            toestelRepo.SchrijfNieuwToestelInDB(toesteltype);
+        }
+        public void VerwijderToestel(int id)
+        {
+            if (!resRepo.BestaatReservatieMetToestel(id))
+                toestelRepo.VerwijderToestelUitDB(id);
         }
     }
 }

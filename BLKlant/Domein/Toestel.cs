@@ -8,6 +8,7 @@ namespace BLKlant.Domein
 {
     public class Toestel
     {
+
         public Toestel(int toestelNummer, string toestelType, string status = "Beschikbaar")
         {
             ToestelNummer = toestelNummer;

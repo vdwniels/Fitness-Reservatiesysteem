@@ -13,6 +13,7 @@ namespace BLKlant.Interfaces
         public bool BestaatReservatie(int klantnummer, DateTime datum);
         public Reservatie SchrijfReservatieInDB(Reservatie r);
 
+        public bool BestaatReservatieMetToestel(int toestel);
 
     }
 }

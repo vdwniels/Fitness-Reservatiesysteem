@@ -3,6 +3,7 @@ using BLKlant.Interfaces;
 using DLKlant.Exceptions;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
@@ -56,7 +57,7 @@ namespace DLKlant
             }
 
         }
-            public void SchrijfKlantInDB(List<Klant> klanten)
+        public void SchrijfKlantInDB(List<Klant> klanten)
             {
             SqlConnection conn = getConnection();
             try
@@ -97,6 +98,61 @@ namespace DLKlant
             {
                 conn.Close();
             }
+        }
+        public Klant SelecteerKlant(int? klantnummer, string? email)
+        {
+            if ((!klantnummer.HasValue) && (string.IsNullOrEmpty(email) == true))
+                throw new KlantRepoADOException("SelecteerKlant - no valid input");
+
+            Klant k = null;
+
+            SqlConnection connection = getConnection();
+            string query = "SELECT * FROM dbo.Klanten WHERE ";
+            if (klantnummer.HasValue) query += "KlantNummer=@klantnummer";
+            if (klantnummer.HasValue && !string.IsNullOrEmpty(email)) query += " AND ";
+            if (!string.IsNullOrEmpty(email)) query += "Email=@email";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                connection.Open();
+                try
+                {
+                    if (klantnummer.HasValue)
+                    {
+                        command.Parameters.AddWithValue("@klantnummer", klantnummer);
+                    }
+                    if (!string.IsNullOrEmpty(email))
+                    {
+                        command.Parameters.AddWithValue("@email", email);
+
+                    }
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int klantnr = (int)reader["KlantNummer"];
+                        string voornaam = (string)reader["Voornaam"];
+                        string achternaam = (string)reader["Achternaam"];
+                        string mail = (string)reader["Email"];
+                        string adres = (string)reader["Adres"];
+                        DateTime geboortedatum = (DateTime)reader["GeboorteDatum"];
+                        string? interesse = null;
+                        if (!reader.IsDBNull(reader.GetOrdinal("Interesses"))) interesse = (string?)reader["Interesses"];
+                        string klanttype = (string)reader["KlantType"];
+                        k = new Klant(klantnr, voornaam, achternaam, mail, adres, geboortedatum, interesse, klanttype);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new KlantRepoADOException("Selecteer Klant", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+            if (k == null) throw new KlantRepoADOException("Klant bestaat niet");
+            return k;
         }
     }
 }

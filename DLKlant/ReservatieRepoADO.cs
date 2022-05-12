@@ -49,6 +49,40 @@ namespace DLKlant
             }
         }
 
+        public bool BestaatReservatieMetToestel(int toestel)
+        {
+            DateTime nu = DateTime.Today;
+            SqlConnection connection = getConnection();
+            string query = "SELECT Count(*) From Reservaties " +
+                "LEFT JOIN GereserveerdeSloten ON Reservaties.reservatienummer = GereserveerdeSloten.reservatienummer " +
+                "WHERE toestel = @toestel AND datum>@datum";
+
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@toestel", SqlDbType.Int));
+                    command.Parameters.Add(new SqlParameter("@datum", SqlDbType.DateTime));
+                    command.Parameters["@toestel"].Value = toestel;
+                    command.Parameters["@datum"].Value = nu;
+                    command.CommandText = query;
+                    int n = (int)command.ExecuteScalar();
+                    if (n > 0) return true;
+                    else return false;
+                }
+                catch (Exception ex)
+                {
+                    throw new ReservatieRepoADOException("Bestaat Reservatie", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+        }
+
         public Reservatie SchrijfReservatieInDB(Reservatie r)
         {
             SqlConnection conn = getConnection();
@@ -116,7 +150,7 @@ namespace DLKlant
                         string slot = (string)reader["slot"];
                         sloten.Add(slot, toestel);
                     }
-                    r.ZetSlotEnToestel(sloten);
+                    //r.ZetSlotEnToestel(sloten);
                     return r;
                 }
                 catch (Exception ex)

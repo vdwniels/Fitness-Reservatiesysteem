@@ -8,7 +8,7 @@ namespace BLKlant.Domein
 {
     public class Klant
     {
-        public Klant(string voornaam, string achternaam, string email, string adres, DateTime geboorteDatum, string interesse, string klantType)
+        public Klant(string voornaam, string achternaam, string email, string adres, DateTime geboorteDatum, string? interesse, string klantType)
         {
             Voornaam = voornaam;
             Achternaam = achternaam;
@@ -19,7 +19,7 @@ namespace BLKlant.Domein
             KlantType = klantType;
         }
 
-        public Klant(int klantNummer, string voornaam, string achternaam, string email, string adres, DateTime geboorteDatum, string interesse, string klantType)
+        public Klant(int klantNummer, string voornaam, string achternaam, string email, string adres, DateTime geboorteDatum, string? interesse, string klantType)
         {
             KlantNummer = klantNummer;
             Voornaam = voornaam;
