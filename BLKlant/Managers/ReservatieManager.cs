@@ -35,5 +35,9 @@ namespace BLKlant.Managers
                 slotRepo.SchrijfGereserveerdeSlotenInDB(r);
                 return r;
         }
+        public IReadOnlyList<Reservatie> SelecteerReservatiesOpKlantnummer(int klantnummer)
+        {
+            return resRepo.SelecteerReservatiesOpKlantNR(klantnummer);
+        }
     }
 }

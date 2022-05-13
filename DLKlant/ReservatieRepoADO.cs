@@ -163,6 +163,48 @@ namespace DLKlant
                 }
             }
         }
+        public IReadOnlyList<Reservatie> SelecteerReservatiesOpKlantNR (int klantnummer)
+        {
+               List<Reservatie> reservaties = new List<Reservatie>();
+                SqlConnection connection = getConnection();
+                string query = "SELECT reservatienummer, klantnummer, email, voornaam, achternaam, datum From Reservaties " +
+                    "WHERE klantnummer = @klantnummer AND datum>@datum";
+            
+                using (SqlCommand command = connection.CreateCommand())
+                {
+                    command.CommandText = query;
+                    command.Parameters.AddWithValue("@klantnummer", klantnummer);
+                command.Parameters.AddWithValue("@datum", DateTime.Today);
 
-    }
+                connection.Open();
+                    try
+                    {
+                        Dictionary<string, int> sloten = new Dictionary<string, int>();
+                        IDataReader reader = command.ExecuteReader();
+                        Reservatie r = null;
+                        while (reader.Read())
+                        {
+                            int reservatienummer = (int)reader["reservatienummer"];
+
+                            string email = (string)reader["email"];
+                            string voornaam = (string)reader["voornaam"];
+                            string achternaam = (string)reader["achternaam"];
+                            DateTime resdatum = (DateTime)reader["datum"];
+                            r = new Reservatie(reservatienummer, klantnummer, email, voornaam, achternaam, resdatum);
+                        reservaties.Add(r);
+                        }
+                        return reservaties.AsReadOnly();
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ReservatieRepoADOException("Selecteer Reservatie", ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                }
+
+            }
+        }
 }

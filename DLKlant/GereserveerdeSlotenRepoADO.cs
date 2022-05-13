@@ -73,8 +73,8 @@ namespace DLKlant
                 try
                 {
                     command.Parameters.Add(new SqlParameter("@reservatienummer", SqlDbType.Int));
-                    command.Parameters.Add(new SqlParameter("@toestel", SqlDbType.DateTime));
-                    command.Parameters.Add(new SqlParameter("@slot", SqlDbType.DateTime));
+                    command.Parameters.Add(new SqlParameter("@toestel", SqlDbType.Int));
+                    command.Parameters.Add(new SqlParameter("@slot", SqlDbType.NVarChar));
 
                     command.Parameters["@reservatienummer"].Value = reservatienummer;
                     command.Parameters["@toestel"].Value = toestel;

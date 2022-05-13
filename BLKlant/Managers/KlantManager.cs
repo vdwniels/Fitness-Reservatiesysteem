@@ -11,7 +11,7 @@ namespace BLKlant.Managers
     public class KlantManager
     {
         private IKlantRepository repo;
-        private Klant k;
+        public Klant k;
         public KlantManager(IKlantRepository repo)
         {
             this.repo = repo;

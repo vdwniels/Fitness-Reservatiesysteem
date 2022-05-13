@@ -43,11 +43,18 @@ namespace KlantUI
 
                 Klant k = klantManager.SelecteerKlant(klantnummer, email);
                 MessageBox.Show($"Welkom terug,\n{k.Voornaam} {k.Achternaam}!");
-                Close();
+                
+                ReservatieWindow reservatieWindow = new ReservatieWindow(klantManager);
+                this.Close();
+                reservatieWindow.ShowDialog();
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "incorrecte login");
+            }
+            finally
+            {
             }
         }
     }
