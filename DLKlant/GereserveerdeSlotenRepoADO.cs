@@ -96,7 +96,7 @@ namespace DLKlant
             }
 
         }
-        public IReadOnlyList<GereserveerdSlot> GeefGereserveerdeSloten(int reservatienummer)
+        public List<GereserveerdSlot> GeefGereserveerdeSloten(int reservatienummer)
         {
             List<GereserveerdSlot> slots = new List<GereserveerdSlot>();
             SqlConnection connection = getConnection();
@@ -119,7 +119,7 @@ namespace DLKlant
                         GereserveerdSlot gs = new GereserveerdSlot(toestel,slot);
                         slots.Add(gs);
                     }
-                    return slots.AsReadOnly();
+                    return slots;
                 }
                 catch (Exception ex)
                 {

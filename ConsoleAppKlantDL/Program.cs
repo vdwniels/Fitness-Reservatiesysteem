@@ -37,22 +37,30 @@ namespace ConsoleAppKlantDL
             //GSRado.SchrijfGereserveerdeSlotenInDB(a);
             //Console.WriteLine(a.ToString());
 
-            ReservatieRepoADO ado = new ReservatieRepoADO(connectiestring);
-            KlantRepoADO kADO = new KlantRepoADO(connectiestring);
-            GereserveerdeSlotenRepoADO GSADO = new GereserveerdeSlotenRepoADO(connectiestring);
-            Klant k = kADO.SelecteerKlant(9, null);
-            Reservatie r = new Reservatie(k.KlantNummer, k.Email, k.Voornaam, k.Achternaam, DateTime.Today.AddDays(4));
-            r.gereserveerdeSlotenEnToestellen.Add("12-13", 7);
-            r.gereserveerdeSlotenEnToestellen.Add("13-14", 8);
-            r.gereserveerdeSlotenEnToestellen.Add("15-16", 8);
+            //ReservatieRepoADO ado = new ReservatieRepoADO(connectiestring);
+            //KlantRepoADO kADO = new KlantRepoADO(connectiestring);
+            //GereserveerdeSlotenRepoADO GSADO = new GereserveerdeSlotenRepoADO(connectiestring);
+            //Klant k = kADO.SelecteerKlant(9, null);
+            //Reservatie r = new Reservatie(k.KlantNummer, k.Email, k.Voornaam, k.Achternaam, DateTime.Today.AddDays(4));
+            //r.gereserveerdeSlotenEnToestellen.Add("12-13", 7);
+            //r.gereserveerdeSlotenEnToestellen.Add("13-14", 8);
+            //r.gereserveerdeSlotenEnToestellen.Add("15-16", 8);
 
-            r = ado.SchrijfReservatieInDB(r);
-            GSADO.SchrijfGereserveerdeSlotenInDB(r);
+            //r = ado.SchrijfReservatieInDB(r);
+            //GSADO.SchrijfGereserveerdeSlotenInDB(r);
             //Reservatie r = ado.SelecteerReservatie(4, DateTime.Today.AddYears(-20));
             //Console.WriteLine(r.ToString());
 
             //Toestel t = ado.SchrijfNieuwToestelInDB("Fiets");
             //ado.VerwijderToestelUitDB(16);
+
+            SlotsRepoADO ado = new SlotsRepoADO(connectiestring);
+            List<string> a = new List<string>();
+            a = ado.GetAlleSloten();
+            foreach( string b in a)
+            {
+                Console.WriteLine(b);
+            }
         }
     }
 }

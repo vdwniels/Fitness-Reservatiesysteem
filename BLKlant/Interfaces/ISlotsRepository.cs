@@ -9,6 +9,7 @@ namespace BLKlant.Interfaces
     public interface ISlotsRepository
     {
         public Dictionary<int, int> GetSlots(Dictionary<string, int> gereserveerdeSloten);
+        public List<string> GetAlleSloten();
 
     }
 }

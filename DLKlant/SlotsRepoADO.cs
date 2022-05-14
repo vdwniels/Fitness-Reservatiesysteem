@@ -52,6 +52,38 @@ namespace DLKlant
             }
             return IDs;
         }
+        public List<string> GetAlleSloten()
+        {
+            List<string> sloten = new List<string>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT Slots From Slots ";
+                
 
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read()) 
+                    { 
+                        string slot = (string)reader["Slots"];
+                        sloten.Add(slot);
+                    }
+                    return sloten;
+                }
+                catch (Exception ex)
+                {
+                    throw new ReservatieRepoADOException("Get Alle Sloten", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+        }
     }
 }

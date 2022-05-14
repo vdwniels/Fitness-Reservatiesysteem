@@ -10,16 +10,40 @@ namespace BLKlant.Managers
 {
     public class GereserveerdeSlotsManager
     {
-        private IGereserveerdeSlotenRepository slotRepo;
+        private IGereserveerdeSlotenRepository GSRepo;
+        private ISlotsRepository slotRepo;
+        public List<GereserveerdSlot> gs;
 
-        public GereserveerdeSlotsManager(IGereserveerdeSlotenRepository slotRepo)
+        public GereserveerdeSlotsManager(IGereserveerdeSlotenRepository gSRepo, ISlotsRepository slotRepo)
         {
+            GSRepo = gSRepo;
             this.slotRepo = slotRepo;
         }
 
         public IReadOnlyList<GereserveerdSlot> SelecteerGereserveerdeSloten (int reservatienummer)
         {
-            return slotRepo.GeefGereserveerdeSloten(reservatienummer);
+            gs = GSRepo.GeefGereserveerdeSloten(reservatienummer);
+            return gs.AsReadOnly() ;
+        }
+
+        public List<string> BeschikbareSloten()
+        {
+            List<string> alleSloten = new List<string>();
+            List<string> bezet = new List<string>();
+            List<string> beschikbaar = new List<string>();
+
+            alleSloten = slotRepo.GetAlleSloten();
+            
+            foreach (GereserveerdSlot GS in gs)
+            {
+                bezet.Add(GS.Slot);
+            }
+            var a = alleSloten.Except(bezet);
+            foreach (string s in a)
+            {
+                beschikbaar.Add(s);
+            }
+            return beschikbaar;
         }
     }
 }

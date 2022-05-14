@@ -31,10 +31,12 @@ namespace KlantUI
             InitializeComponent();
             klant = k;
             reservatie = r;
-            GSManager = new GereserveerdeSlotsManager(new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()));
+            GSManager = new GereserveerdeSlotsManager(new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()),
+                new SlotsRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString())); 
             GebruikerLabel.Content = $"Gebruiker : {klant.Voornaam} {klant.Achternaam}";
             ReservatieLabel.Content = $"Reservatie : {r.ToString()}";
             SlotenListBox.ItemsSource = GSManager.SelecteerGereserveerdeSloten(reservatie.ReservatieNummer);
+            SlotComboBox.ItemsSource = GSManager.BeschikbareSloten();//moet na listbox komen
         }
 
         private void TerugButton_Click(object sender, RoutedEventArgs e)
