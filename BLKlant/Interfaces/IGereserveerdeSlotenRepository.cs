@@ -10,6 +10,7 @@ namespace BLKlant.Interfaces
     public interface IGereserveerdeSlotenRepository
     {
         public void SchrijfGereserveerdeSlotenInDB(Reservatie r);
+        public IReadOnlyList<GereserveerdSlot> GeefGereserveerdeSloten(int reservatienummer);
 
     }
 }

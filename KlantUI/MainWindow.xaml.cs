@@ -44,7 +44,7 @@ namespace KlantUI
                 Klant k = klantManager.SelecteerKlant(klantnummer, email);
                 MessageBox.Show($"Welkom terug,\n{k.Voornaam} {k.Achternaam}!");
                 
-                ReservatieWindow reservatieWindow = new ReservatieWindow(klantManager);
+                ReservatieWindow reservatieWindow = new ReservatieWindow(k);
                 this.Close();
                 reservatieWindow.ShowDialog();
                 
@@ -56,6 +56,16 @@ namespace KlantUI
             finally
             {
             }
+        }
+
+        private void KlantnummerTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            OKButton.IsEnabled = true;
+        }
+
+        private void EmailTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            OKButton.IsEnabled = true;
         }
     }
 }

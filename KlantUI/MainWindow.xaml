@@ -21,8 +21,8 @@
     <Label Grid.Row="0" Grid.Column="0" Content="Klantnummer" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5,5,5,5" />
         <Label Grid.Row="0" Grid.Column="2" Content="Email" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="5,5,5,5" />
         <Label Grid.Row="0" Grid.Column="1" Content="en/of" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Margin="0,5,0,5" />
-        <TextBox Grid.Row="1" Grid.Column="0" Name="KlantnummerTextBox"  Margin="5,5,5,5" />
-        <TextBox Grid.Row="1" Grid.Column="2" Name="EmailTextBox" Margin="5,5,5,5" />
-        <Button x:Name="click" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Content="OK" Margin="5,5,5,5" Click="OK_Button_Click" />
+        <TextBox Grid.Row="1" Grid.Column="0" Name="KlantnummerTextBox"  Margin="5,5,5,5" TextChanged="KlantnummerTextBox_TextChanged" />
+        <TextBox Grid.Row="1" Grid.Column="2" Name="EmailTextBox" Margin="5,5,5,5" TextChanged="EmailTextBox_TextChanged" />
+        <Button Name="OKButton" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Content="OK" Margin="5,5,5,5" Click="OK_Button_Click" IsEnabled="False" />
     </Grid>
 </Window>

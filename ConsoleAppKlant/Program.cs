@@ -19,7 +19,8 @@ namespace ConsoleAppKlant
             //{
             //    Console.WriteLine(a.Key + a.Value);
             //}
-        
+            
+
         }
     }
 }

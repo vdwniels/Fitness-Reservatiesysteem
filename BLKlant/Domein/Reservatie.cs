@@ -94,10 +94,10 @@ namespace BLKlant.Domein
         public override string ToString()
         {
             string s = $"{ReservatieNummer},{KlantNummer},{Emailadres},{Voornaam},{Achternaam},{Datum}";
-            foreach (var v in gereserveerdeSlotenEnToestellen)
-            {
-                s += $" || {v.Key} , {v.Key}";
-            }
+            //foreach (var v in gereserveerdeSlotenEnToestellen)
+            //{
+            //    s += $" || {v.Key} , {v.Key}";
+            //}
             return s;
         }
     }

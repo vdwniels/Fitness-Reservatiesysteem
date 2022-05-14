@@ -96,5 +96,42 @@ namespace DLKlant
             }
 
         }
+        public IReadOnlyList<GereserveerdSlot> GeefGereserveerdeSloten(int reservatienummer)
+        {
+            List<GereserveerdSlot> slots = new List<GereserveerdSlot>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT toestel,slot From GereserveerdeSloten " +
+                "WHERE reservatienummer=@reservatienummer";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                command.Parameters.AddWithValue("@reservatienummer", reservatienummer);
+
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int toestel = (int)reader["toestel"];
+                        string slot = (string)reader["slot"];
+                        GereserveerdSlot gs = new GereserveerdSlot(toestel,slot);
+                        slots.Add(gs);
+                    }
+                    return slots.AsReadOnly();
+                }
+                catch (Exception ex)
+                {
+                    throw new ReservatieRepoADOException("Selecteer Reservatie", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+
+        }
     }
 }

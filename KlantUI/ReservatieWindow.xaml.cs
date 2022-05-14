@@ -1,4 +1,5 @@
-﻿using BLKlant.Managers;
+﻿using BLKlant.Domein;
+using BLKlant.Managers;
 using DLKlant;
 using System;
 using System.Collections.Generic;
@@ -22,37 +23,46 @@ namespace KlantUI
     /// </summary>
     public partial class ReservatieWindow : Window
     {
-        private KlantManager klantManager;
         private ReservatieManager reservatieManager;
-
-        public ReservatieWindow(KlantManager klantManager)
+        public Reservatie geselecteerdeReservatie;
+        private Klant klant;
+        public ReservatieWindow(Klant k)
         {
             InitializeComponent();
+            klant = k;
             reservatieManager = new ReservatieManager(
     new ReservatieRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()),
     new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()));
 
-            GebruikerLabel.Content = $"Gebruiker : {klantManager.k.Voornaam} {klantManager.k.Achternaam}";
-            ReservatiesListBox.ItemsSource = reservatieManager.SelecteerReservatiesOpKlantnummer(klantManager.k.KlantNummer);
+            GebruikerLabel.Content = $"Gebruiker : {klant.Voornaam} {klant.Achternaam}";
+            ReservatiesListBox.ItemsSource = reservatieManager.SelecteerReservatiesOpKlantnummer(klant.KlantNummer);
         }
 
         private void ReservatiesListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            VulReservatieAanButton.IsEnabled = true;
+            geselecteerdeReservatie = (Reservatie)ReservatiesListBox.SelectedItem;
         }
 
         private void NieuweReservatieButton_Click(object sender, RoutedEventArgs e)
         {
+            MaakReservatieWindow MaakWindow = new MaakReservatieWindow(klant);
+            this.Close();
+            MaakWindow.ShowDialog();
             
         }
 
         private void VulReservatieAanButton_Click(object sender, RoutedEventArgs e)
         {
-
+            ReservatieAanvullenWindow RA_Window = new ReservatieAanvullenWindow(klant,geselecteerdeReservatie);
+            RA_Window.ShowDialog();
         }
 
         private void TerugButton_Click(object sender, RoutedEventArgs e)
         {
+            MainWindow LoginWindow = new MainWindow();
+            this.Close();
+            LoginWindow.ShowDialog();
 
         }
     }
