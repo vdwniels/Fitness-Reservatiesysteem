@@ -68,7 +68,8 @@ namespace BLKlant.Domein
             if (datum < DateTime.Today || datum > DateTime.Today.AddDays(7)) throw new ReservatieExeption("ZetDatum - geen reservatie mogelijk op deze datum");
             Datum = datum;
         }
-        public void ZetSlotEnToestel(Dictionary<string, int> gereserveerd)
+        public void ZetSlotEnToestel(Dictionary<string, int> gereserveerd)//TODO fix controle
+
         {
             foreach (var g in gereserveerd)
             {

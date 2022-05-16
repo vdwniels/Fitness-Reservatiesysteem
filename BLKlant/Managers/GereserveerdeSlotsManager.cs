@@ -1,4 +1,5 @@
 ﻿using BLKlant.Domein;
+using BLKlant.Exceptions;
 using BLKlant.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -44,6 +45,12 @@ namespace BLKlant.Managers
                 beschikbaar.Add(s);
             }
             return beschikbaar;
+        }
+        public void VoegSlotToeAanReservatie(Reservatie r)
+        {
+            if (GSRepo.GetAantalGereserveerdeSloten(r) < 4)
+                GSRepo.SchrijfGereserveerdeSlotenInDB(r);
+            else throw new GereserveerdeSlotsManagerException("Maximaal aantal sloten per dag berijkt");
         }
     }
 }

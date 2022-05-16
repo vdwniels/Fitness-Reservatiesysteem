@@ -19,7 +19,7 @@ namespace BLKlant.Managers
             this.slotRepo = slotRepo;
         }
 
-        public Reservatie MaakReservatie(int klantNummer, string emailadres, string voornaam, string achternaam, DateTime datum, Dictionary<string, int> gereserveerdeSloten)
+        public Reservatie MaakReservatie(int klantNummer, string emailadres, string voornaam, string achternaam, DateTime datum)
         {
             Reservatie r = null;
             if (!resRepo.BestaatReservatie(klantNummer, datum))
@@ -31,8 +31,8 @@ namespace BLKlant.Managers
             {
                 r = resRepo.SelecteerReservatie(klantNummer, datum);
             }
-                r.ZetSlotEnToestel(gereserveerdeSloten);
-                slotRepo.SchrijfGereserveerdeSlotenInDB(r);
+                //r.ZetSlotEnToestel(gereserveerdeSloten);
+                //slotRepo.SchrijfGereserveerdeSlotenInDB(r);
                 return r;
         }
         public IReadOnlyList<Reservatie> SelecteerReservatiesOpKlantnummer(int klantnummer)

@@ -40,9 +40,10 @@ new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDB
 
             for(int i = 1; i < 8; i++)
             {
+                
                 BeschikbareDagen.Add(DateTime.Today.AddDays(i));
             }
-
+            
             DatumComboBox.ItemsSource = BeschikbareDagen;
         }
 
@@ -56,7 +57,7 @@ new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDB
         private void DatumComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DatumIngevuld = true;
-            if (DatumIngevuld == true && SlotIngevuld == true)
+            if (DatumIngevuld == true)
             {
                 SlotenButton.IsEnabled = true;
             }
@@ -65,6 +66,8 @@ new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDB
 
         private void SlotenButton_Click(object sender, RoutedEventArgs e)
         {
+            DateTime d = (DateTime)DatumComboBox.SelectedItem;
+            reservatie = rm.MaakReservatie(klant.KlantNummer, klant.Email, klant.Voornaam, klant.Achternaam, d);
             ReservatieAanvullenWindow RA_Window = new ReservatieAanvullenWindow(klant, reservatie);
             RA_Window.ShowDialog();
 

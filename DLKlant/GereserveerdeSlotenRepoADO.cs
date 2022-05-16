@@ -133,5 +133,34 @@ namespace DLKlant
 
 
         }
+        public int GetAantalGereserveerdeSloten(Reservatie r)
+        {
+            SqlConnection connection = getConnection();
+            string query = "SELECT count(*) FROM GereserveerdeSloten Join Reservaties ON GereserveerdeSloten.reservatienummer=Reservaties.reservatienummer WHERE klantnummer=@klantnummer AND datum=@datum";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                connection.Open();
+                try
+                {
+                    command.Parameters.Add(new SqlParameter("@klantnummer", SqlDbType.Int));
+                    command.Parameters.Add(new SqlParameter("@datum", SqlDbType.DateTime));
+                    command.Parameters["@klantnummer"].Value = r.KlantNummer;
+                    command.Parameters["@datum"].Value = r.Datum;
+                    command.CommandText = query;
+                    int n = (int)command.ExecuteScalar();
+                    return n;
+                }
+                catch (Exception ex)
+                {
+                    throw new ReservatieRepoADOException("Bestaat Reservatie", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+        }
     }
 }

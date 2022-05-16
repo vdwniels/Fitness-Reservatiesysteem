@@ -11,6 +11,8 @@ namespace BLKlant.Interfaces
     {
         public void SchrijfGereserveerdeSlotenInDB(Reservatie r);
         public List<GereserveerdSlot> GeefGereserveerdeSloten(int reservatienummer);
+        public int GetAantalGereserveerdeSloten(Reservatie r);
+
 
     }
 }

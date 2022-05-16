@@ -47,7 +47,7 @@ namespace KlantUI
         private void NieuweReservatieButton_Click(object sender, RoutedEventArgs e)
         {
             MaakReservatieWindow MaakWindow = new MaakReservatieWindow(klant);
-            this.Close();
+            //this.Close();
             MaakWindow.ShowDialog();
             
         }

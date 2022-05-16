@@ -21,7 +21,7 @@
         </Grid.RowDefinitions>
         <Label Grid.Row="0" Grid.Column="2" Name="GebruikerLabel"  Margin="5,5,5,5" HorizontalAlignment="Right"/>
         <Label Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Name="ReservatieLabel"  Margin="5,5,5,5" />
-        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,5,5,5" Name="ToestellenListBox" />
+        <ListBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Margin="5,5,5,5" Name="ToestellenListBox" SelectionChanged="ToestellenListBox_SelectionChanged" />
         <Button Grid.Row="3" Grid.Column="0" Name="TerugButton" Content="Terug" Margin="5,5,5,5" Click="TerugButton_Click"/>
         <Button Grid.Row="3" Grid.Column="2" Name="VoegToeButton" Content="Maak reservatie" Margin="5,5,5,5" Click="VoegToeButton_Click" IsEnabled="False"/>
 

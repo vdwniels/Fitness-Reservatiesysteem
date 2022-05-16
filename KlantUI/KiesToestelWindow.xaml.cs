@@ -27,12 +27,17 @@ namespace KlantUI
         private Reservatie reservatie;
         private string slot;
         private ToestelManager tm;
+        private GereserveerdeSlotsManager gsm;
         public KiesToestelWindow(Klant k, Reservatie r, string s)
         {
             InitializeComponent();
             tm = new ToestelManager(
 new ToestelRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()),
 new ReservatieRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()));
+
+            gsm= new GereserveerdeSlotsManager(
+new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()),
+new SlotsRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()));
 
 
             klant = k;
@@ -45,12 +50,22 @@ new ReservatieRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnectio
 
         private void VoegToeButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Dictionary<string, int> a = new Dictionary<string, int>();
+            Toestel t = (Toestel)ToestellenListBox.SelectedItem;
+            a.Add(slot, t.ToestelNummer);
+            reservatie.ZetSlotEnToestel(a);
+            gsm.VoegSlotToeAanReservatie(reservatie);
+            Close();
         }
 
         private void TerugButton_Click(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void ToestellenListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            VoegToeButton.IsEnabled = true;
         }
     }
 }
