@@ -12,6 +12,8 @@ namespace BLKlant.Interfaces
         public void UpdateStatus(Toestel t);
         public Toestel SchrijfNieuwToestelInDB(string toesteltype);
         public void VerwijderToestelUitDB(int id);
+        public List<Toestel> GetAlleToestellen();
+        public List<Toestel> GetBezetteToestellen(DateTime datum, string slot);
 
     }
 }

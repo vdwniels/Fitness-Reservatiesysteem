@@ -43,5 +43,18 @@ namespace KlantUI
         {
             Close();
         }
+
+        private void SlotComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ZoekToestelButton.IsEnabled = true;
+        }
+
+        private void ZoekToestelButton_Click(object sender, RoutedEventArgs e)
+        {
+            
+            KiesToestelWindow KT_Window = new KiesToestelWindow(klant, reservatie, (string)SlotComboBox.SelectedItem);
+            KT_Window.ShowDialog();
+
+        }
     }
 }

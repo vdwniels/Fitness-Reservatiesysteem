@@ -1,6 +1,9 @@
 ﻿using BLKlant.Domein;
+using BLKlant.Managers;
+using DLKlant;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,13 +23,18 @@ namespace KlantUI
     /// </summary>
     public partial class MaakReservatieWindow : Window
     {
+        private ReservatieManager rm;
+        private Reservatie reservatie;
         private List<DateTime> BeschikbareDagen = new List<DateTime>();
         private bool DatumIngevuld = false;
-        private bool SlotIngevuld = false;
         private Klant klant;
         public MaakReservatieWindow(Klant k)
         {
             InitializeComponent();
+            rm = new ReservatieManager(
+new ReservatieRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()),
+new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()));
+
             klant = k;
             GebruikerLabel.Content = $"Gebruiker : {klant.Voornaam} {klant.Achternaam}";
 
@@ -38,37 +46,28 @@ namespace KlantUI
             DatumComboBox.ItemsSource = BeschikbareDagen;
         }
 
-        private void LogUitButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void TerugButton_Click(object sender, RoutedEventArgs e)
         {
-
+            Close();
         }
 
-        private void ZoekToestelButton_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
 
         private void DatumComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             DatumIngevuld = true;
             if (DatumIngevuld == true && SlotIngevuld == true)
             {
-                ZoekToestelButton.IsEnabled = true;
+                SlotenButton.IsEnabled = true;
             }
         }
 
-        private void SlotComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+
+        private void SlotenButton_Click(object sender, RoutedEventArgs e)
         {
-            SlotIngevuld = true;
-            if (DatumIngevuld == true && SlotIngevuld == true)
-            {
-                ZoekToestelButton.IsEnabled = true;
-            }
+            ReservatieAanvullenWindow RA_Window = new ReservatieAanvullenWindow(klant, reservatie);
+            RA_Window.ShowDialog();
+
         }
     }
 }

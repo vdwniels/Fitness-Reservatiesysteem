@@ -32,5 +32,22 @@ namespace BLKlant.Managers
             if (!resRepo.BestaatReservatieMetToestel(id))
                 toestelRepo.VerwijderToestelUitDB(id);
         }
+        public List<Toestel> BeschikbareToestellen(DateTime datum, string slot)
+        {
+            List<Toestel> alleToestellen = new List<Toestel>();
+            List<Toestel> bezet = new List<Toestel>();
+            List<Toestel> beschikbaar = new List<Toestel>();
+
+            alleToestellen = toestelRepo.GetAlleToestellen();
+            bezet = toestelRepo.GetBezetteToestellen(datum, slot);
+            
+            var a = alleToestellen.Except(bezet);
+            foreach (Toestel t in a)
+            {
+                beschikbaar.Add(t);
+            }
+            return beschikbaar;
+        }
+
     }
 }

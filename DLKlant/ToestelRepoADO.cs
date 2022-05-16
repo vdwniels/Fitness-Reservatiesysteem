@@ -105,5 +105,83 @@ namespace DLKlant
                 conn.Close();
             }
         }
+        public List<Toestel> GetAlleToestellen()
+        {
+            List<Toestel> toestellen = new List<Toestel>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT * From Toestellen WHERE Status = 'beschikbaar'";
+
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int id = (int)reader["Id"];
+                        string toestelType = (string)reader["ToestelType"];
+                        string status = (string)reader["Status"];
+
+                        toestellen.Add(new Toestel(id,toestelType,status));
+                    }
+                    return toestellen;
+                }
+                catch (Exception ex)
+                {
+                    throw new ToestelRepoADOException("Get Alle Toestellen", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+        }
+        public List<Toestel> GetBezetteToestellen(DateTime datum,string slot)
+        {
+            List<Toestel> toestellen = new List<Toestel>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT Toestellen.* From Toestellen "+
+"Join GereserveerdeSloten On Toestellen.Id = GereserveerdeSloten.toestel "+
+"Left Join Reservaties ON Reservaties.reservatienummer = GereserveerdeSloten.reservatienummer "+
+"WHERE Reservaties.datum = @datum AND GereserveerdeSloten.slot = @slot; ";
+
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+                command.Parameters.AddWithValue("@slot", slot);
+                command.Parameters.AddWithValue("@datum", datum);
+
+
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int id = (int)reader["Id"];
+                        string toestelType = (string)reader["ToestelType"];
+                        string status = (string)reader["Status"];
+
+                        toestellen.Add(new Toestel(id, toestelType, status));
+                    }
+                    return toestellen;
+                }
+                catch (Exception ex)
+                {
+                    throw new ToestelRepoADOException("Get Beschikbare Toestellen", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+        }
     }
 }
