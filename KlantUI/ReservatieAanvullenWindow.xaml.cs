@@ -26,6 +26,7 @@ namespace KlantUI
         private Klant klant;
         private Reservatie reservatie;
         public GereserveerdeSlotsManager GSManager;
+        public List<GereserveerdSlot> gs;
         public ReservatieAanvullenWindow(Klant k, Reservatie r)
         {
             InitializeComponent();
@@ -35,7 +36,8 @@ namespace KlantUI
                 new SlotsRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString())); 
             GebruikerLabel.Content = $"Gebruiker : {klant.Voornaam} {klant.Achternaam}";
             ReservatieLabel.Content = $"Reservatie : {r.ToString()}";
-            SlotenListBox.ItemsSource = GSManager.SelecteerGereserveerdeSloten(reservatie.ReservatieNummer);
+                gs = GSManager.SelecteerGereserveerdeSloten(reservatie.ReservatieNummer);
+            SlotenListBox.ItemsSource = gs;
             SlotComboBox.ItemsSource = GSManager.BeschikbareSloten();//moet na listbox komen
         }
 
@@ -53,8 +55,11 @@ namespace KlantUI
         {
             
             KiesToestelWindow KT_Window = new KiesToestelWindow(klant, reservatie, (string)SlotComboBox.SelectedItem);
-            KT_Window.ShowDialog();
-
+            if (KT_Window.ShowDialog() == true)
+            {
+                gs.Add(new GereserveerdSlot(KT_Window.t.ToestelNummer, (string)SlotComboBox.SelectedItem));
+            }
+                SlotenListBox.ItemsSource = gs;
         }
     }
 }

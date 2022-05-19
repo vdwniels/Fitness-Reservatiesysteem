@@ -21,10 +21,10 @@ namespace BLKlant.Managers
             this.slotRepo = slotRepo;
         }
 
-        public IReadOnlyList<GereserveerdSlot> SelecteerGereserveerdeSloten (int reservatienummer)
+        public List<GereserveerdSlot> SelecteerGereserveerdeSloten (int reservatienummer)
         {
             gs = GSRepo.GeefGereserveerdeSloten(reservatienummer);
-            return gs.AsReadOnly() ;
+            return gs ;
         }
 
         public List<string> BeschikbareSloten()

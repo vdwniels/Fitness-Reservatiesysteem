@@ -1,4 +1,5 @@
 ﻿using BLKlant.Domein;
+using BLKlant.Exceptions;
 using BLKlant.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -19,18 +20,29 @@ namespace BLKlant.Managers
             this.resRepo = resRepo;
         }
 
-        public void VeranderStatus (Toestel t)
+        public void VeranderStatus(Toestel t)
         {
             toestelRepo.UpdateStatus(t);
         }
-        public void VoegToestelToe(string toesteltype)
+        public Toestel VoegToestelToe(string toesteltype)
         {
-            toestelRepo.SchrijfNieuwToestelInDB(toesteltype);
+            return toestelRepo.SchrijfNieuwToestelInDB(toesteltype);
         }
-        public void VerwijderToestel(int id)
+        public void VerwijderToestel(List<Toestel> toestellen)
         {
-            if (!resRepo.BestaatReservatieMetToestel(id))
-                toestelRepo.VerwijderToestelUitDB(id);
+            Toestel toestelMetReservatie = null;
+            foreach(Toestel t in toestellen)
+            {
+                if (resRepo.BestaatReservatieMetToestel(t.ToestelNummer) == true)
+                {
+
+                    toestelMetReservatie = t;
+                    break;
+                }
+            }
+            if (toestelMetReservatie == null)
+                toestelRepo.VerwijderToestelUitDB(toestellen);
+            else throw new ToestelManagerException($"Toestel {toestelMetReservatie.ToestelNummer} heeft nog openstaande reservaties");
         }
         public List<Toestel> BeschikbareToestellen(DateTime datum, string slot)
         {
@@ -40,7 +52,7 @@ namespace BLKlant.Managers
 
             alleToestellen = toestelRepo.GetAlleToestellen();
             bezet = toestelRepo.GetBezetteToestellen(datum, slot);
-            
+
             var a = alleToestellen.Except(bezet);
             foreach (Toestel t in a)
             {
@@ -48,6 +60,13 @@ namespace BLKlant.Managers
             }
             return beschikbaar;
         }
-
+        public List<string> GetToestelTypes()
+        {
+            return toestelRepo.GetToestelTypes();
+        }
+        public List<Toestel> GetAlleToestellen()
+        {
+            return toestelRepo.GetBeschikbaarEnBuitenGebruik();
+        }
     }
 }

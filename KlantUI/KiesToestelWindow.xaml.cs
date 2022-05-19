@@ -28,6 +28,7 @@ namespace KlantUI
         private string slot;
         private ToestelManager tm;
         private GereserveerdeSlotsManager gsm;
+        public Toestel t;
         public KiesToestelWindow(Klant k, Reservatie r, string s)
         {
             InitializeComponent();
@@ -50,12 +51,21 @@ new SlotsRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].T
 
         private void VoegToeButton_Click(object sender, RoutedEventArgs e)
         {
-            Dictionary<string, int> a = new Dictionary<string, int>();
-            Toestel t = (Toestel)ToestellenListBox.SelectedItem;
-            a.Add(slot, t.ToestelNummer);
-            reservatie.ZetSlotEnToestel(a);
-            gsm.VoegSlotToeAanReservatie(reservatie);
-            Close();
+            try
+            {
+                Dictionary<string, int> a = new Dictionary<string, int>();
+                t = (Toestel)ToestellenListBox.SelectedItem;
+                a.Add(slot, t.ToestelNummer);
+                reservatie.ZetSlotEnToestel(a);
+                gsm.VoegSlotToeAanReservatie(reservatie);
+                DialogResult = true;
+                Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "incorrect slot");
+
+            }
         }
 
         private void TerugButton_Click(object sender, RoutedEventArgs e)

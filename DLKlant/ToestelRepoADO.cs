@@ -81,19 +81,22 @@ namespace DLKlant
                 conn.Close();
             }
         }
-        public void VerwijderToestelUitDB(int id)
+        public void VerwijderToestelUitDB(List<Toestel> toestellen)
         {
             SqlConnection conn = getConnection();
             try
             {
                 conn.Open();
-                using (SqlCommand cmd = conn.CreateCommand())
+                foreach (Toestel t in toestellen)
                 {
-                    string query = "DELETE FROM Toestellen WHERE Id=@id";
-                    cmd.Parameters.Add(new SqlParameter("@id", System.Data.SqlDbType.Int));
-                    cmd.Parameters["@id"].Value = id;
-                    cmd.CommandText = query;
-                    cmd.ExecuteScalar();
+                    using (SqlCommand cmd = conn.CreateCommand())
+                    {
+                        string query = "DELETE FROM Toestellen WHERE Id=@id";
+                        cmd.Parameters.Add(new SqlParameter("@id", System.Data.SqlDbType.Int));
+                        cmd.Parameters["@id"].Value = t.ToestelNummer;
+                        cmd.CommandText = query;
+                        cmd.ExecuteScalar();
+                    }
                 }
             }
             catch (Exception ex)
@@ -141,6 +144,43 @@ namespace DLKlant
             }
 
         }
+        public List<Toestel> GetBeschikbaarEnBuitenGebruik()
+        {
+            List<Toestel> toestellen = new List<Toestel>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT * From Toestellen";
+
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int id = (int)reader["Id"];
+                        string toestelType = (string)reader["ToestelType"];
+                        string status = (string)reader["Status"];
+
+                        toestellen.Add(new Toestel(id, toestelType, status));
+                    }
+                    return toestellen;
+                }
+                catch (Exception ex)
+                {
+                    throw new ToestelRepoADOException("GetBeschikbaarEnBuitengebruik", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+        }
+
         public List<Toestel> GetBezetteToestellen(DateTime datum,string slot)
         {
             List<Toestel> toestellen = new List<Toestel>();
@@ -175,6 +215,41 @@ namespace DLKlant
                 catch (Exception ex)
                 {
                     throw new ToestelRepoADOException("Get Beschikbare Toestellen", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+            }
+
+        }
+        public List<string> GetToestelTypes()
+        {
+            List<string> toestelTypes = new List<string>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT * From ToestelType";
+
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+
+                connection.Open();
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        
+                        string type = (string)reader["Type"];
+
+                        toestelTypes.Add(type);
+                    }
+                    return toestelTypes;
+                }
+                catch (Exception ex)
+                {
+                    throw new ToestelRepoADOException("GetToestelTypes", ex);
                 }
                 finally
                 {
