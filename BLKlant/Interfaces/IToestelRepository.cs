@@ -9,7 +9,7 @@ namespace BLKlant.Interfaces
 {
     public interface IToestelRepository
     {
-        public void UpdateStatus(Toestel t);
+        public void UpdateStatus(List<Toestel> toestellen);
         public Toestel SchrijfNieuwToestelInDB(string toesteltype);
         public void VerwijderToestelUitDB(List<Toestel> toestellen);
         public List<Toestel> GetAlleToestellen();

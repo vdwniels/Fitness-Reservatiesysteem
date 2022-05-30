@@ -25,7 +25,7 @@ namespace KlantUI
     {
         private Klant klant;
         private Reservatie reservatie;
-        private string slot;
+        public string slot;
         private ToestelManager tm;
         private GereserveerdeSlotsManager gsm;
         public Toestel t;

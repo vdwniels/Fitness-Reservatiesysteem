@@ -35,7 +35,7 @@ namespace BLKlant.Domein
 
         public override string ToString()
         {
-            return $"Toestel {ToestelNummer} ({ToestelType})";
+            return $"Toestel {ToestelNummer} ({ToestelType}) - {Status}";
         }
     }
 }

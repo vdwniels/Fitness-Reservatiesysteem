@@ -42,6 +42,9 @@ namespace BeheerderUI
 
         private void VeranderStatusToestelButton_Click(object sender, RoutedEventArgs e)
         {
+            VerandeStatusWindow VS = new VerandeStatusWindow();
+            Close();
+            VS.ShowDialog();
 
         }
     }

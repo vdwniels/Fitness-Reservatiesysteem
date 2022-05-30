@@ -14,7 +14,7 @@ namespace BLKlant.Interfaces
         public Reservatie SchrijfReservatieInDB(Reservatie r);
 
         public bool BestaatReservatieMetToestel(int toestel);
-        public IReadOnlyList<Reservatie> SelecteerReservatiesOpKlantNR(int klantnummer);
+        public List<Reservatie> SelecteerReservatiesOpKlantNR(int klantnummer);
 
     }
 }

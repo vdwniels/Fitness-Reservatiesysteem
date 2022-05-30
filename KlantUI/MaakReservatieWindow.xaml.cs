@@ -24,7 +24,7 @@ namespace KlantUI
     public partial class MaakReservatieWindow : Window
     {
         private ReservatieManager rm;
-        private Reservatie reservatie;
+        public Reservatie reservatie;
         private List<DateTime> BeschikbareDagen = new List<DateTime>();
         private bool DatumIngevuld = false;
         private Klant klant;
@@ -70,6 +70,11 @@ new GereserveerdeSlotenRepoADO(ConfigurationManager.ConnectionStrings["fitnessDB
             reservatie = rm.MaakReservatie(klant.KlantNummer, klant.Email, klant.Voornaam, klant.Achternaam, d);
             ReservatieAanvullenWindow RA_Window = new ReservatieAanvullenWindow(klant, reservatie);
             RA_Window.ShowDialog();
+            if (rm.reservatieBestaatAl == false)
+            {
+                DialogResult = true;
+            }
+            this.Close();
 
         }
     }

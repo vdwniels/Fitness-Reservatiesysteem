@@ -3,6 +3,7 @@ using BLKlant.Managers;
 using DLKlant;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -24,9 +25,10 @@ namespace KlantUI
     public partial class ReservatieAanvullenWindow : Window
     {
         private Klant klant;
-        private Reservatie reservatie;
+        public Reservatie reservatie;
         public GereserveerdeSlotsManager GSManager;
-        public List<GereserveerdSlot> gs;
+        public ObservableCollection<GereserveerdSlot> gs = new ObservableCollection<GereserveerdSlot>();
+        public ObservableCollection<string> beschikbareSloten = new ObservableCollection<string>();
         public ReservatieAanvullenWindow(Klant k, Reservatie r)
         {
             InitializeComponent();
@@ -36,9 +38,18 @@ namespace KlantUI
                 new SlotsRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString())); 
             GebruikerLabel.Content = $"Gebruiker : {klant.Voornaam} {klant.Achternaam}";
             ReservatieLabel.Content = $"Reservatie : {r.ToString()}";
-                gs = GSManager.SelecteerGereserveerdeSloten(reservatie.ReservatieNummer);
+            List<GereserveerdSlot> sloten = GSManager.SelecteerGereserveerdeSloten(reservatie.ReservatieNummer);
+            foreach (GereserveerdSlot GS in sloten)
+            {
+                gs.Add(GS);
+            }
             SlotenListBox.ItemsSource = gs;
-            SlotComboBox.ItemsSource = GSManager.BeschikbareSloten();//moet na listbox komen
+            List<string> beschikbaar = GSManager.BeschikbareSloten();
+            foreach(string s in beschikbaar)
+            {
+                beschikbareSloten.Add(s);
+            }
+            SlotComboBox.ItemsSource = beschikbareSloten;//moet na listbox komen
         }
 
         private void TerugButton_Click(object sender, RoutedEventArgs e)
@@ -58,6 +69,7 @@ namespace KlantUI
             if (KT_Window.ShowDialog() == true)
             {
                 gs.Add(new GereserveerdSlot(KT_Window.t.ToestelNummer, (string)SlotComboBox.SelectedItem));
+                beschikbareSloten.Remove(KT_Window.slot);
             }
                 SlotenListBox.ItemsSource = gs;
         }

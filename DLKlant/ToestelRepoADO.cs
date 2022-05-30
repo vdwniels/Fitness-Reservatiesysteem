@@ -23,36 +23,41 @@ namespace DLKlant
             return new SqlConnection(ConnectieString);
         }
 
-        public void UpdateStatus(Toestel t)
+        public void UpdateStatus(List<Toestel> toestellen)
         {
             SqlConnection connection = getConnection();
             string query = "UPDATE Toestellen SET Status=@status WHERE Id=@id";
 
             connection.Open();
-            using (SqlCommand command = connection.CreateCommand())
-            {
-                try
-                {
-                    command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
-                    command.Parameters.Add(new SqlParameter("@status", SqlDbType.NVarChar));
-                    command.Parameters["@id"].Value = t.ToestelNummer;
-                    if (t.Status == "Beschikbaar")
-                        command.Parameters["@status"].Value = "Buiten Gebruik";
-                    else
-                        command.Parameters["@status"].Value = "Beschikbaar";
-                    command.CommandText = query;
-                    command.ExecuteNonQuery();
-                }
-                catch (Exception ex)
-                {
-                    throw new ToestelRepoADOException("UpdateStatus", ex);
-                }
-                finally
-                {
-                    connection.Close();
-                }
+                    try
+                    {
+                        foreach (Toestel t in toestellen)
+                        {
+                            using (SqlCommand command = connection.CreateCommand())
+                            {
+                        command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                        command.Parameters.Add(new SqlParameter("@status", SqlDbType.NVarChar));
+                        command.Parameters["@id"].Value = t.ToestelNummer;
+                        if (t.Status == "Beschikbaar")
+                            command.Parameters["@status"].Value = "Buiten Gebruik";
+                        else
+                            command.Parameters["@status"].Value = "Beschikbaar";
+                        command.CommandText = query;
+                        command.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new ToestelRepoADOException("UpdateStatus", ex);
+                    }
+                    finally
+                    {
+                        connection.Close();
+                    }
+                
             }
-        }
+        
         public Toestel SchrijfNieuwToestelInDB(string toesteltype)
         {
             SqlConnection conn = getConnection();

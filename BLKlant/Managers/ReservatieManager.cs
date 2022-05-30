@@ -12,7 +12,7 @@ namespace BLKlant.Managers
     {
         private IReservatieRepository resRepo;
         private IGereserveerdeSlotenRepository slotRepo;
-
+        public bool reservatieBestaatAl = false;
         public ReservatieManager(IReservatieRepository resRepo, IGereserveerdeSlotenRepository slotRepo)
         {
             this.resRepo = resRepo;
@@ -29,13 +29,14 @@ namespace BLKlant.Managers
             }
             else
             {
+                reservatieBestaatAl = true;
                 r = resRepo.SelecteerReservatie(klantNummer, datum);
             }
                 //r.ZetSlotEnToestel(gereserveerdeSloten);
                 //slotRepo.SchrijfGereserveerdeSlotenInDB(r);
                 return r;
         }
-        public IReadOnlyList<Reservatie> SelecteerReservatiesOpKlantnummer(int klantnummer)
+        public List<Reservatie> SelecteerReservatiesOpKlantnummer(int klantnummer)
         {
             return resRepo.SelecteerReservatiesOpKlantNR(klantnummer);
         }

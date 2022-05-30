@@ -20,9 +20,9 @@ namespace BLKlant.Managers
             this.resRepo = resRepo;
         }
 
-        public void VeranderStatus(Toestel t)
+        public void VeranderStatus(List<Toestel> toestellen)
         {
-            toestelRepo.UpdateStatus(t);
+            toestelRepo.UpdateStatus(toestellen);
         }
         public Toestel VoegToestelToe(string toesteltype)
         {

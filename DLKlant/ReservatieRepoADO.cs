@@ -163,7 +163,7 @@ namespace DLKlant
                 }
             }
         }
-        public IReadOnlyList<Reservatie> SelecteerReservatiesOpKlantNR (int klantnummer)
+        public List<Reservatie> SelecteerReservatiesOpKlantNR (int klantnummer)
         {
                List<Reservatie> reservaties = new List<Reservatie>();
                 SqlConnection connection = getConnection();
@@ -193,7 +193,7 @@ namespace DLKlant
                             r = new Reservatie(reservatienummer, klantnummer, email, voornaam, achternaam, resdatum);
                         reservaties.Add(r);
                         }
-                        return reservaties.AsReadOnly();
+                        return reservaties;
                     }
                     catch (Exception ex)
                     {
