@@ -101,7 +101,7 @@ namespace DLKlant
             List<GereserveerdSlot> slots = new List<GereserveerdSlot>();
             SqlConnection connection = getConnection();
             string query = "SELECT toestel,slot From GereserveerdeSloten " +
-                "WHERE reservatienummer=@reservatienummer";
+                "WHERE reservatienummer=@reservatienummer ORDER BY slot";
 
             using (SqlCommand command = connection.CreateCommand())
             {
@@ -159,6 +159,49 @@ namespace DLKlant
                 {
                     connection.Close();
                 }
+            }
+
+        }
+        public Dictionary<int,int> GetSlotIdEnToestel (Reservatie r)
+        {
+            Dictionary<int, int> sEnT = new Dictionary<int, int>();
+            SqlConnection connection = getConnection();
+            string query = "SELECT GereserveerdeSloten.toestel,Slots.SlotID From GereserveerdeSloten Join Slots ON GereserveerdeSloten.slot = Slots.Slots " +
+                "WHERE Slots.Slots = @slot AND GereserveerdeSloten.reservatienummer = @nummer";
+
+            using (SqlCommand command = connection.CreateCommand())
+            {
+                command.CommandText = query;
+
+                foreach(string s in r.gereserveerdeSlotenEnToestellen.Keys)
+                {
+                connection.Open();
+                    command.Parameters.AddWithValue("@nummer", r.ReservatieNummer);
+
+                    command.Parameters.AddWithValue("@slot", s);
+                try
+                {
+                    IDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int toestel = (int)reader["toestel"];
+                        int slot = (int)reader["SlotID"];
+                        sEnT.Add(toestel,slot);
+                       ;
+                    }
+                    
+                }
+                catch (Exception ex)
+                {
+                    throw new ReservatieRepoADOException("ID", ex);
+                }
+                finally
+                {
+                    connection.Close();
+                }
+                    
+                }
+                return sEnT;
             }
 
         }

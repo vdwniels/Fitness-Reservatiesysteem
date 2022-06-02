@@ -7,7 +7,7 @@ namespace BLKlant.Domein
     public class Reservatie
     {
         public Dictionary<string, int> gereserveerdeSlotenEnToestellen = new Dictionary<string, int>();
-        private Dictionary<int, int> gereserveerdeSlotIDsEnToestellen = new Dictionary<int, int>();
+        //private Dictionary<int, int> gereserveerdeSlotIDsEnToestellen = new Dictionary<int, int>();
         public Reservatie(int klantNummer, string emailadres, string voornaam, string achternaam, DateTime datum)
         {
             

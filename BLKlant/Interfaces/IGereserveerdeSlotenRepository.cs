@@ -13,6 +13,7 @@ namespace BLKlant.Interfaces
         public List<GereserveerdSlot> GeefGereserveerdeSloten(int reservatienummer);
         public int GetAantalGereserveerdeSloten(Reservatie r);
 
+        public Dictionary<int, int> GetSlotIdEnToestel(Reservatie r);
 
     }
 }

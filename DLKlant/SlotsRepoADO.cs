@@ -21,24 +21,24 @@ namespace DLKlant
         {
             return new SqlConnection(ConnectieString);
         }
-        public Dictionary<int,int> GetSlots(Dictionary<string, int> gereserveerdeSloten)
+        public Dictionary<string,int> GetSlots(List<string> gereserveerdeSloten)
         {
-            Dictionary<int,int> IDs = new Dictionary<int,int>();
+            Dictionary<string,int> IDs = new Dictionary<string,int>();
 
             SqlConnection connection = getConnection();
             try
             {
                 connection.Open();
-                foreach (var slot in gereserveerdeSloten)
+                foreach (string slot in gereserveerdeSloten)
                 {
                     using (SqlCommand command = connection.CreateCommand())
                     {
                         string query = "SELECT SlotID FROM dbo.Slots WHERE Slots=@slots";
                         command.Parameters.Add(new SqlParameter("@slots", SqlDbType.NVarChar));
-                        command.Parameters["@slots"].Value = slot.Key;
+                        command.Parameters["@slots"].Value = slot;
                         command.CommandText = query;
                         int n = (int)command.ExecuteScalar();
-                        IDs.Add(n, slot.Value);
+                        IDs.Add(slot, n);
                     }
                 }
             }

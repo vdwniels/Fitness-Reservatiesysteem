@@ -3,6 +3,7 @@ using BLKlant.Managers;
 using DLKlant;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Configuration;
 using System.Linq;
 using System.Text;
@@ -24,14 +25,18 @@ namespace BeheerderUI
     public partial class VoegToestelToeWindow : Window
     {
         private ToestelManager tm;
-        private List<Toestel> toestellen;
+        private ObservableCollection<Toestel> toestellen = new ObservableCollection<Toestel>();
         public VoegToestelToeWindow()
         {
             InitializeComponent();
             tm = new ToestelManager(new ToestelRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()),
                 new ReservatieRepoADO(ConfigurationManager.ConnectionStrings["fitnessDBconnection"].ToString()));
             ToestelTpeComboBox.ItemsSource = tm.GetToestelTypes();
-                toestellen = tm.GetAlleToestellen();
+            List<Toestel> alleToestellen =  tm.GetAlleToestellen();
+            foreach( Toestel t in alleToestellen)
+            {
+                toestellen.Add(t);
+            }
             ToestellenListBox.ItemsSource = toestellen;
         }
 
@@ -46,9 +51,10 @@ namespace BeheerderUI
         {
             Toestel t;
             t = tm.VoegToestelToe((string)ToestelTpeComboBox.SelectedItem);
-            //toestellen.Add(t);
+            toestellen.Add(t);
+            ToestellenListBox.ItemsSource = toestellen;
             //ToestellenListBox.Items.Add(t);
-            
+
         }
 
         private void ToestelTpeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

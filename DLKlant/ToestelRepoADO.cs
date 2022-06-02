@@ -117,7 +117,7 @@ namespace DLKlant
         {
             List<Toestel> toestellen = new List<Toestel>();
             SqlConnection connection = getConnection();
-            string query = "SELECT * From Toestellen WHERE Status = 'beschikbaar'";
+            string query = "SELECT * From Toestellen WHERE Status = 'beschikbaar' ORDER BY Id";
 
 
             using (SqlCommand command = connection.CreateCommand())
@@ -153,7 +153,7 @@ namespace DLKlant
         {
             List<Toestel> toestellen = new List<Toestel>();
             SqlConnection connection = getConnection();
-            string query = "SELECT * From Toestellen";
+            string query = "SELECT * From Toestellen ORDER BY Id";
 
 
             using (SqlCommand command = connection.CreateCommand())

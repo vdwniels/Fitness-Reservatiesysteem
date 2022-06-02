@@ -15,10 +15,12 @@ namespace BLKlant.Managers
         {
             this.repo = repo;
         }
-        //public Dictionary<int,int> GetSloten()
-        //{
-        //    Dictionary<int, int> slots;
-        //    slots = repo.GetSlots();
-        //}
+
+        public Dictionary<string, int> GetSlots(List<string> gereserveerdeSloten)
+        {
+            Dictionary<string, int> slots = new Dictionary<string, int>();
+            slots = repo.GetSlots(gereserveerdeSloten);
+            return slots;
+        }
     }
 }

@@ -168,7 +168,7 @@ namespace DLKlant
                List<Reservatie> reservaties = new List<Reservatie>();
                 SqlConnection connection = getConnection();
                 string query = "SELECT reservatienummer, klantnummer, email, voornaam, achternaam, datum From Reservaties " +
-                    "WHERE klantnummer = @klantnummer AND datum>@datum";
+                    "WHERE klantnummer = @klantnummer AND datum>@datum Order By datum";
             
                 using (SqlCommand command = connection.CreateCommand())
                 {
